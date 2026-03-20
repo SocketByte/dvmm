@@ -24,34 +24,17 @@ make
 ```bash
 sudo cp dvmm /usr/bin/dvmm
 ```
-6. Create a systemd service:
+6. Create an autostart script.
+### For KDE
 ```bash
-# /etc/systemd/system/dvmm.service
-[Unit]
-Description=Dynamic VM Manager Tray App
-After=graphical.target
-
-[Service]
-Type=simple
-
-User=YOUR_USERNAME
-Group=YOUR_USERNAME
-
-Environment=DISPLAY=:0
-Environment=XDG_RUNTIME_DIR=/run/user/1000
-Environment=DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
-
-ExecStart=/usr/bin/dvmm
-Restart=always
-RestartSec=3
-
-[Install]
-WantedBy=graphical.target
+# autostart-dvmm.sh
+sleep 3
+/usr/bin/dvmm
 ```
 ```bash
-sudo systemctl enable dvmm
-sudo systemctl start dvmm
+sudo chmod +x ./autostart-dvmm.sh
 ```
+Add it through the KDE autostart settings GUI as a new autostart script.
 
 ## Requirements
 - Requires `gpu-check` installed globally.
