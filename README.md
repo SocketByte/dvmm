@@ -19,7 +19,7 @@ cmake ..
 make
 ```
 3. Create two icons (`vfio.png` and `nvidia.png`) at `~/.config/dvmm`
-4. Ensure your virtual machine is named `win11`
+4. Create the file `~/.config/dvmm/vm.conf` and write the name of your VM in it.
 5. Install the application to `/usr/bin`:
 ```bash
 sudo cp dvmm /usr/bin/dvmm
