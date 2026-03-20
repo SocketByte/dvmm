@@ -6,6 +6,9 @@
 
 static char nvidia_icon_path[PATH_MAX];
 static char vfio_icon_path[PATH_MAX];
+static char config_path[PATH_MAX];
+static FILE* config_file;
+static char vm_name[16];
 
 static AppIndicator *indicator = NULL;
 
@@ -15,7 +18,7 @@ static void on_lg_exit(GPid pid, gint status, gpointer user_data) {
     char* args[] = {
         "virsh",
         "-c", "qemu:///system",
-        "shutdown", "win11",
+        "shutdown", vm_name,
         NULL
     };
     run_process(args);
@@ -27,7 +30,7 @@ static void on_vm_run(GtkMenuItem *item, gpointer user_data) {
     char* args[] = {
         "virsh",
         "-c", "qemu:///system",
-        "start", "win11",
+        "start", vm_name,
         NULL
     };
     run_process(args);
@@ -75,6 +78,17 @@ int main(int argc, char **argv) {
 
     snprintf(vfio_icon_path, sizeof(vfio_icon_path),
              "%s/.config/dvmm/vfio.png", home);
+
+    snprintf(config_path, sizeof(config_path),
+         "%s/.config/dvmm/vm.conf", home);
+
+    config_file = fopen(config_path, "r");
+    if (config_file == NULL) {
+        g_error("could not load vm.conf");
+    }
+
+    fscanf(config_file, "%15s", vm_name);
+    fclose(config_file);
 
     g_log_set_handler("libayatana-appindicator",
                       G_LOG_LEVEL_WARNING,
